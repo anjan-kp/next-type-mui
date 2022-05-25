@@ -11,12 +11,13 @@ import Wrapper from "./Wrapper";
 import { style } from "../styles/style";
 
 const PhoneBookForm = () => {
-    const addRecord = (e) => {
+    const addRecord = (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log('event :', e.target);
     };
 
     return (
-        <form autocomplete="off" onSubmit={addRecord} style={style.form.container}>
+        <form  onSubmit={addRecord} style={style.form.container}>
             <label>Name:</label>
             <br />
             <input style={style.form.inputs} name="n" type="text" />
