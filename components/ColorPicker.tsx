@@ -8,9 +8,9 @@ import { Box, Slider, Typography, Stack, Paper } from "@mui/material";
 export default function () {
     const { r, g, b } = { r: 30, g: 30, b: 30 };
 
-    const getVal = (e, val) => {
-        console.log(e.target.name, val);
-    };
+    // const getVal = (e, val:Number) => {
+    //     console.log(e.target.name, val);
+    // };
 
     return (
         <>
@@ -30,7 +30,7 @@ export default function () {
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
-                        onChange={getVal}
+                        onChange={(e, val)=>console.log(val)}
                         min={0}
                         max={255}
                     />
@@ -40,7 +40,7 @@ export default function () {
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
-                        onChange={getVal}
+                        onChange={(e, val)=>console.log(val)}
                         min={0}
                         max={255}
                     />
@@ -50,7 +50,7 @@ export default function () {
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
-                        onChange={getVal}
+                        onChange={(e, val)=>console.log(val)}
                         min={0}
                         max={255}
                     />
