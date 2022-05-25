@@ -6,11 +6,16 @@ import ColorPicker from "./ColorPicker";
 
 const Layout = () => {
     const [value, setValue] = React.useState("1");
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
     return (
         <Box sx={{ width: "100%", typography: "body1" }}>
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <TabList onChange={((e, newValue)=>setValue(newValue))} aria-label="lab API tabs example">
+                    <TabList onChange={handleChange} aria-label="lab API tabs example">
                         <Tab label="Color Picker" value="1" />
                         <Tab label="Phone Book" value="2" />
                         {/* <Tab label="Animation" value="3" /> */}
