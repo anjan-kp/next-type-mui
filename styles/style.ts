@@ -1,6 +1,6 @@
 export const style = {
     table: {
-        borderCollapse: "collapse",
+        "border-collapse": "collapse",
         width: "100%"
     },
     tableCell: {

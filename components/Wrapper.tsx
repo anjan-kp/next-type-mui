@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/material";
-export default ({ children, stack }) => {
+export default ({ children, stack }: any) => {
     return (
         <Box
             sx={{

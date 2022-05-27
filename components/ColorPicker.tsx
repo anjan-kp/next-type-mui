@@ -8,7 +8,7 @@ import { Box, Slider, Typography, Stack, Paper } from "@mui/material";
 export default function () {
     const { r, g, b } = { r: 30, g: 30, b: 30 };
 
-    const getVal = (e, val) => {
+    const getVal = (e:any, val:any) => {
         console.log(e.target.name, val);
     };
 
