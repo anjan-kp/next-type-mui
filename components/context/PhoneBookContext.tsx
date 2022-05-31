@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 
 export type phoneListProps = {    
         name: string,
@@ -16,7 +16,7 @@ type PhoneContextType = {
 
 export const PhoneContextProvider = ({ children }: PhoneContextProviderProps) => {
     const [phoneDetails, setPhoneDetails] = useState<phoneListProps[] | []>([]);
-
+    const LOCAL_KEY = 'PHONEBOOK';
     const savePhoneList = (list: phoneListProps) => {
         const newList: phoneListProps = {
             name:list.name.toUpperCase(),
@@ -24,7 +24,18 @@ export const PhoneContextProvider = ({ children }: PhoneContextProviderProps) =>
         };
         setPhoneDetails([...phoneDetails, newList]);
       };
-      
+
+    useEffect(() => {
+        const data = localStorage.getItem(LOCAL_KEY);
+        if (data) {
+            setPhoneDetails(JSON.parse(data))
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('data', JSON.stringify(phoneDetails))
+    })
+
     return <PhoneContext.Provider value={{ phoneDetails, savePhoneList }}>{children}</PhoneContext.Provider>
 }
 
