@@ -1,5 +1,9 @@
+type WrapperProp = {
+    children:React.ReactNode
+    stack ?: Boolean
+}
 import { Box, Stack } from "@mui/material";
-export default ({ children, stack }) => {
+export default ({children, stack} : WrapperProp) => {
     return (
         <Box
             sx={{
