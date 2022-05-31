@@ -6,6 +6,7 @@ Phone field should take only 10 digit numbers.
 Table header should be hidden if no data is present.
 Make the data persistent till the browser is open.
 The component tree should not be modified.
+Session storage custome hook for persiting the data.
 */
 import { useState, useContext } from "react";
 import Wrapper from "./Wrapper";
@@ -14,29 +15,31 @@ import { PhoneContext } from "./context/PhoneBookContext";
 
 const PhoneBookForm = () => {
     const phoneContext = useContext(PhoneContext);
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    // const [phoneDairy, setPhoneDairy] = useState<{ Name: string; Phone: string }[]>([],)
-
+    const [formData, setFormData] = useState({
+        name:'',
+        phone:''
+    });
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({...formData, [e.target.name]:e.target.value});
+    }
     const addRecord = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('event :', name, phone);
-        // setPhoneDairy(pre => [...pre, { Name: name, Phone: phone },]);
-        phoneContext?.savePhoneList({name, phone});
-        setName(''), setPhone('');
+        console.log('event :', formData);
+        phoneContext?.savePhoneList(formData);
+        setFormData({name:'', phone:''});
     };
 
     return (
         <form onSubmit={addRecord} style={style.form.container}>
             <label>Name:</label>
             <br />
-            <input style={style.form.inputs} name="n" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+            <input style={style.form.inputs} name="name" type="text" value={formData.name} onChange={handleOnChange} />
             <br />
             <label>Phone:</label>
             <br />
-            <input style={style.form.inputs} name="p" type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <input style={style.form.inputs} name="phone" type="text" value={formData.phone} onChange={handleOnChange} />
             <br />
-            <input style={style.form.submitBtn} type="submit" value="Add User" disabled={name && phone ? false : true} />
+            <input style={style.form.submitBtn} type="submit" value="Add User" disabled={formData && formData.name && formData.phone ? false : true} />
         </form>
     );
 };
