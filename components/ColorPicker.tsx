@@ -7,10 +7,16 @@ import { useState } from "react";
 import { Box, Slider, Typography, Stack, Paper } from "@mui/material";
 
 export default function () {
-    const [red, setRed] = useState(30);
-    const [green, setGreen] = useState(30);
-    const [blue, setBlue] = useState(30);
-
+    const [colorPallets, setcolorPallets] = useState({
+        red:30,
+        green:30,
+        blue:30
+    });
+    const getVal = (e: Event, val: number | number[]) =>{
+        let name = (e.target as HTMLInputElement).name;
+        setcolorPallets({...colorPallets, [name]:val});
+    }
+    const {red, green, blue} = colorPallets;
     return (
         <>
             <Box
@@ -25,31 +31,31 @@ export default function () {
                 <Stack sx={{ height: 200 }} spacing={1} direction="row">
                     <Typography gutterBottom>Red</Typography>
                     <Slider
-                        name="r"
+                        name="red"
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
-                        onChange={(e, val)=>setRed(Number(val))}
+                        onChange={getVal}
                         min={0}
                         max={255}
                     />
                     <Typography gutterBottom>Green</Typography>
                     <Slider
-                        name="g"
+                        name="green"
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
-                        onChange={(e, val)=>setGreen(Number(val))}
+                        onChange={getVal}
                         min={0}
                         max={255}
                     />
                     <Typography gutterBottom>Blue</Typography>
                     <Slider
-                        name="b"
+                        name="blue"
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
-                        onChange={(e, val)=>setBlue(Number(val))}
+                        onChange={getVal}
                         min={0}
                         max={255}
                     />
