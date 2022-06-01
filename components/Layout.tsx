@@ -3,6 +3,7 @@ import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import PhoneBook from "./PhoneBook";
 import ColorPicker from "./ColorPicker";
+import Play from "./Play";
 
 const Layout = () => {
     const [value, setValue] = React.useState("1");
@@ -18,7 +19,7 @@ const Layout = () => {
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
                         <Tab label="Color Picker" value="1" />
                         <Tab label="Phone Book" value="2" />
-                        {/* <Tab label="Animation" value="3" /> */}
+                        <Tab label="Play" value="3" />
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -28,7 +29,7 @@ const Layout = () => {
                     <PhoneBook />
                 </TabPanel>
                 <TabPanel value="3">
-                    <div>Animation</div>
+                    <Play />
                 </TabPanel>
             </TabContext>
         </Box>
