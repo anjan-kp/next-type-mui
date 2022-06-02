@@ -19,51 +19,76 @@ const PhoneBookForm = () => {
         name:'',
         phone:''
     });
+    const [errors, setErrors] = useState({nameError:'', phoneError:''});
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]:e.target.value});
     }
-    const addRecord = (e: React.FormEvent<HTMLFormElement>) => {
+    const addRecord = (e:  React.SyntheticEvent) => {
         e.preventDefault();
-        console.log('event :', formData);
-        phoneContext?.savePhoneList(formData);
-        setFormData({name:'', phone:''});
+        console.log('Error :', errors);
+        if(validate()){
+            phoneContext?.savePhoneList(formData);
+            setFormData({name:'', phone:''});
+            setErrors({nameError:'', phoneError:''});
+        }
     };
-
+    const validate = () => {
+        const {name, phone} = formData;
+        let error = {nameError:'', phoneError: ''};
+        if (!phoneContext) return null;
+            const { phoneDetails } = phoneContext;
+            console.log('phonedetails :', phoneDetails);
+        let isValid = true;
+        let pattern = new RegExp(/^[0-9\b]+$/);
+        if(name && phoneDetails?.length && phoneDetails?.some(val=>val.name === name.toUpperCase())){            
+            isValid =  false;
+            error.nameError = 'Please enter valid non-repeating name.'
+        }
+        if(phone && (!pattern.test(phone) || phone.length < 10)){
+            isValid = false;
+            error.phoneError = 'please enter 10 digit valid phone number.';
+        }
+        setErrors(error)
+        return isValid;
+    }
+    const {name, phone} = formData;
     return (
-        <form onSubmit={addRecord} style={style.form.container}>
+        <form autoComplete="off" onSubmit={addRecord} style={style.form.container}>
             <label>Name:</label>
             <br />
-            <input style={style.form.inputs} name="name" type="text" value={formData.name} onChange={handleOnChange} />
-            <br />
+            <input style={style.form.inputs} name="name" type="text" value={name} onChange={handleOnChange} />
+            <span style={style.error}>{errors.nameError}</span>
             <label>Phone:</label>
             <br />
-            <input style={style.form.inputs} name="phone" type="text" value={formData.phone} onChange={handleOnChange} />
-            <br />
-            <input style={style.form.submitBtn} type="submit" value="Add User" disabled={formData && formData.name && formData.phone ? false : true} />
+            <input style={style.form.inputs} name="phone" type="text" value={phone} onChange={handleOnChange} />
+            <span style={style.error}>{errors.phoneError}</span>
+            <input style={style.form.submitBtn} type="submit" value="Add User" disabled={name && phone ? false : true} />
         </form>
     );
 };
-
+const sortedArray = (list:any, val:any) => list?.sort((a:any,b:any)=>{
+    if (a.val < b.val)
+       return -1;
+    else if (a.val == b.val)
+       return 0;
+    else
+       return 1;
+});
 const InformationTable = () => {
     const phoneContext = useContext(PhoneContext);
-    let sortedArray = phoneContext?.phoneDetails?.sort((a,b)=>{
-        if (a.name < b.name)
-           return -1;
-        else if (a.name == b.name)
-           return 0;
-        else
-           return 1;
-    });
+    if (!phoneContext) return null;
+    const { phoneDetails } = phoneContext;
+    let updatedArray = sortedArray(phoneDetails, "name");
     return (
         <table style={style.table}>
-            <thead>
+            {updatedArray.length ? <thead>
                 <tr>
                     <th style={style.tableCell}>Name</th>
                     <th style={style.tableCell}>Phone</th>
                 </tr>
-            </thead>
+            </thead> : null}
             <tbody>
-                {sortedArray?.map((list, index)=><tr key={index}>
+                {updatedArray?.map((list: { name: string | undefined; phone: string | number | undefined; }, index: number)=><tr key={index}>
                     <td>{list.name}</td>
                     <td>{list.phone}</td>
                 </tr>)}

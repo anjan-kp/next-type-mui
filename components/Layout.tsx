@@ -3,6 +3,8 @@ import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import PhoneBook from "./PhoneBook";
 import ColorPicker from "./ColorPicker";
+import { PhoneContextProvider } from '../components/context/PhoneBookContext'
+
 
 const Layout = () => {
     const [value, setValue] = React.useState("1");
@@ -25,7 +27,9 @@ const Layout = () => {
                     <ColorPicker />
                 </TabPanel>
                 <TabPanel value="2">
-                    <PhoneBook />
+                    <PhoneContextProvider>
+                        <PhoneBook />
+                    </PhoneContextProvider>
                 </TabPanel>
                 <TabPanel value="3">
                     <div>Animation</div>

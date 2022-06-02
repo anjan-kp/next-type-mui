@@ -34,5 +34,10 @@ export const style = {
     msg: {
         textAlign: "center" as "center",
         paddingTop: "10px"
+    },
+    error: {
+        color:"red",
+        fontSize:"8px",
+        display: "block"
     }
 };
