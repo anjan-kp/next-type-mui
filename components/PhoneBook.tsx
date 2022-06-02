@@ -42,9 +42,9 @@ const PhoneBookForm = () => {
         let pattern = new RegExp(/^[0-9\b]+$/);
         if(name && phoneDetails?.length && phoneDetails?.some(val=>val.name === name.toUpperCase())){            
             isValid =  false;
-            error.nameError = 'Please enter valid non-repeating name.'
+            error.nameError = 'Invalid!!!, Name exists already.'
         }
-        if(phone && (!pattern.test(phone) || phone.length < 10)){
+        if(phone && (!pattern.test(phone) || phone.length !== 10)){
             isValid = false;
             error.phoneError = 'please enter 10 digit valid phone number.';
         }
