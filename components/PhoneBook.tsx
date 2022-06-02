@@ -40,9 +40,10 @@ const PhoneBookForm = () => {
             console.log('phonedetails :', phoneDetails);
         let isValid = true;
         let pattern = new RegExp(/^[0-9\b]+$/);
-        if(name && phoneDetails?.length && phoneDetails?.some(val=>val.name === name.toUpperCase())){            
+        let namePattern = new RegExp(/^[a-zA-Z]+$/);
+        if(name && (!namePattern.test(name)) || (phoneDetails?.length && phoneDetails?.some(val=>val.name === name.toUpperCase()))){            
             isValid =  false;
-            error.nameError = 'Invalid!!!, Name exists already.'
+            error.nameError = `Invalid!!!, Name ${namePattern.test(name) ? "exists already":"should be in alphabetic"}.`
         }
         if(phone && (!pattern.test(phone) || phone.length !== 10)){
             isValid = false;
