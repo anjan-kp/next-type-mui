@@ -17,6 +17,7 @@ export default function () {
         setcolorPallets({...colorPallets, [name]:val});
     }
     const {red, green, blue} = colorPallets;
+
     return (
         <>
             <Box
