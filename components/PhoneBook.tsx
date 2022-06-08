@@ -8,17 +8,31 @@ Make the data persistent till the browser is open.
 The component tree should not be modified.
 Session storage custome hook for persiting the data.
 */
-import { useState, useContext } from "react";
+import { useState, useContext, createContext, useEffect } from "react";
 import Wrapper from "./Wrapper";
 import { style } from "../styles/style";
-import { PhoneContext } from "./context/PhoneBookContext";
+import {useLocalStorage} from '../hooks/useStorage';
+
+
+// type Contexting and creating.
+type phoneListProps = {    
+    name: string,
+    phone: string    
+}
+type GlobalContent = {
+    phoneList: phoneListProps[],
+    setphoneList:(val: {}) => void
+  }
+const PhonesBookContext = createContext<GlobalContent | null>(null);
+
+//END
 
 const PhoneBookForm = () => {
-    const phoneContext = useContext(PhoneContext);
     const [formData, setFormData] = useState({
         name:'',
         phone:''
     });
+    const phonesList = useContext(PhonesBookContext);
     const [errors, setErrors] = useState({nameError:'', phoneError:''});
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]:e.target.value});
@@ -27,7 +41,7 @@ const PhoneBookForm = () => {
         e.preventDefault();
         console.log('Error :', errors);
         if(validate()){
-            phoneContext?.savePhoneList(formData);
+            phonesList?.savePhonesList(formData);
             setFormData({name:'', phone:''});
             setErrors({nameError:'', phoneError:''});
         }
@@ -35,13 +49,13 @@ const PhoneBookForm = () => {
     const validate = () => {
         const {name, phone} = formData;
         let error = {nameError:'', phoneError: ''};
-        if (!phoneContext) return null;
-            const { phoneDetails } = phoneContext;
-            console.log('phonedetails :', phoneDetails);
+        if (!phonesList) return null;
+            const { phoneList } = phonesList;
+            console.log('phoneList :', phoneList);
         let isValid = true;
         let pattern = new RegExp(/^[0-9\b]+$/);
         let namePattern = new RegExp(/^[a-zA-Z]+$/);
-        if(name && (!namePattern.test(name)) || (phoneDetails?.length && phoneDetails?.some(val=>val.name === name.toUpperCase()))){            
+        if(name && (!namePattern.test(name)) || (phoneList?.length && phoneList?.some(val=>val.name === name.toUpperCase()))){            
             isValid =  false;
             error.nameError = `Invalid!!!, Name ${namePattern.test(name) ? "exists already":"should be in alphabetic"}.`
         }
@@ -76,9 +90,10 @@ const sortedArray = (list:any, val:any) => list?.sort((a:any,b:any)=>{
        return 1;
 });
 const InformationTable = () => {
-    const phoneContext = useContext(PhoneContext);
-    if (!phoneContext) return null;
-    const { phoneDetails } = phoneContext;
+    const phonesContextList = useContext(PhonesBookContext);
+    console.log('phonesContextList:', phonesContextList);
+    if (!phonesContextList) return null;
+    const { phoneDetails } = phonesContextList;
     let updatedArray = sortedArray(phoneDetails, "name");
     return (
         <table style={style.table}>
@@ -89,7 +104,7 @@ const InformationTable = () => {
                 </tr>
             </thead> : null}
             <tbody>
-                {updatedArray?.map((list: { name: string | undefined; phone: string | number | undefined; }, index: number)=><tr key={index}>
+                {updatedArray.map((list: { name: string | undefined; phone: string | number | undefined; }, index: number)=><tr key={index}>
                     <td>{list.name}</td>
                     <td>{list.phone}</td>
                 </tr>)}
@@ -99,10 +114,10 @@ const InformationTable = () => {
 };
 
 const Message = () => {
-    const phoneContext = useContext(PhoneContext);
+    const phoneContext = useContext(PhonesBookContext);
     return <div style={style.msg}>
         <h4>Total Number of Contacts</h4>
-        <h1>{phoneContext?.phoneDetails?.length}</h1>
+        <h1>{phoneContext?.phoneList?.length}</h1>
     </div>
 };
 
@@ -117,11 +132,29 @@ const InfoWrapper = () => (
         <InformationTable/>
     </Wrapper>
 );
-export default () => (
-    <>
-        <FormWrapper />
-        <br />
-        <InfoWrapper />
-    </>
-);
-
+export default () => {
+    const [phoneDetails, setPhoneDetails] = useState<phoneListProps[]>([]);
+    const [getLocalItems, setLocalItems] = useLocalStorage();
+    console.log('storage : ', useLocalStorage(), getLocalItems)
+    const LOCAL_KEY = 'PHONEBOOK';
+    const savePhonesList = (list: phoneListProps) => {
+        const newList: phoneListProps = {
+            name:list.name.toUpperCase(),
+            phone:list.phone
+        };
+        setPhoneDetails([...phoneDetails, newList]);
+        setLocalItems(LOCAL_KEY, [...phoneDetails, newList]);
+      };
+    useEffect(()=>{
+        if(getLocalItems(LOCAL_KEY)){
+            setPhoneDetails(getLocalItems(LOCAL_KEY));
+        }
+    },[]);
+    return (
+        <PhonesBookContext.Provider value={{phoneDetails, savePhonesList}}>
+            <FormWrapper />
+            <br />
+            <InfoWrapper />
+        </PhonesBookContext.Provider>
+    );
+}

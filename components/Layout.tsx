@@ -27,9 +27,7 @@ const Layout = () => {
                     <ColorPicker />
                 </TabPanel>
                 <TabPanel value="2">
-                    <PhoneContextProvider>
-                        <PhoneBook />
-                    </PhoneContextProvider>
+                    <PhoneBook />
                 </TabPanel>
                 <TabPanel value="3">
                     <Play />
