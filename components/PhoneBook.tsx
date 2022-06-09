@@ -15,12 +15,12 @@ import {useLocalStorage} from '../hooks/useStorage';
 
 
 // type Contexting and creating.
-type phoneListProps = {    
+type PhoneListProps = {    
     name: string,
     phone: string    
 }
 type GlobalContent = {
-    phoneList: phoneListProps[],
+    phoneList: PhoneListProps[],
     setphoneList:(val: {}) => void
   }
 const PhonesBookContext = createContext<GlobalContent | null>(null);
@@ -39,7 +39,6 @@ const PhoneBookForm = () => {
     }
     const addRecord = (e:  React.SyntheticEvent) => {
         e.preventDefault();
-        console.log('Error :', errors);
         if(validate()){
             phonesList?.savePhonesList(formData);
             setFormData({name:'', phone:''});
@@ -49,9 +48,8 @@ const PhoneBookForm = () => {
     const validate = () => {
         const {name, phone} = formData;
         let error = {nameError:'', phoneError: ''};
-        if (!phonesList) return null;
-            const { phoneList } = phonesList;
-            console.log('phoneList :', phoneList);
+        // if (!phonesList) return null;
+        const { phoneList } = phonesList!;
         let isValid = true;
         let pattern = new RegExp(/^[0-9\b]+$/);
         let namePattern = new RegExp(/^[a-zA-Z]+$/);
@@ -91,7 +89,6 @@ const sortedArray = (list:any, val:any) => list?.sort((a:any,b:any)=>{
 });
 const InformationTable = () => {
     const phonesContextList = useContext(PhonesBookContext);
-    console.log('phonesContextList:', phonesContextList);
     if (!phonesContextList) return null;
     const { phoneDetails } = phonesContextList;
     let updatedArray = sortedArray(phoneDetails, "name");
@@ -117,7 +114,7 @@ const Message = () => {
     const phoneContext = useContext(PhonesBookContext);
     return <div style={style.msg}>
         <h4>Total Number of Contacts</h4>
-        <h1>{phoneContext?.phoneList?.length}</h1>
+        <h1>{phoneContext?.phoneDetails.length}</h1>
     </div>
 };
 
@@ -133,12 +130,11 @@ const InfoWrapper = () => (
     </Wrapper>
 );
 export default () => {
-    const [phoneDetails, setPhoneDetails] = useState<phoneListProps[]>([]);
+    const [phoneDetails, setPhoneDetails] = useState<PhoneListProps[]>([]);
     const [getLocalItems, setLocalItems] = useLocalStorage();
-    console.log('storage : ', useLocalStorage(), getLocalItems)
     const LOCAL_KEY = 'PHONEBOOK';
-    const savePhonesList = (list: phoneListProps) => {
-        const newList: phoneListProps = {
+    const savePhonesList = (list: PhoneListProps) => {
+        const newList: PhoneListProps = {
             name:list.name.toUpperCase(),
             phone:list.phone
         };

@@ -12,9 +12,8 @@ export default function () {
         green:30,
         blue:30
     });
-    const getVal = (e: Event, val: number | number[]) =>{
-        let name = (e.target as HTMLInputElement).name;
-        setcolorPallets({...colorPallets, [name]:val});
+    const getVal = (e: Event, val: number | number[]):void =>{
+        setcolorPallets({...colorPallets, [(e.target as HTMLInputElement).name]:val});
     }
     const {red, green, blue} = colorPallets;
 

@@ -3,7 +3,6 @@ import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import PhoneBook from "./PhoneBook";
 import ColorPicker from "./ColorPicker";
-import { PhoneContextProvider } from '../components/context/PhoneBookContext'
 import Play from "./Play";
 
 const Layout = () => {
