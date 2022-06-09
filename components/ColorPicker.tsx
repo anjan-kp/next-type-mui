@@ -3,14 +3,19 @@ Make this application dynamic to change color on slider movement.
 Small boxes will fill colors red, green, blue [top to bottom]
 Big box will show the combined color in RGB(red, green, blue)
 */
+import { useState } from "react";
 import { Box, Slider, Typography, Stack, Paper } from "@mui/material";
 
 export default function () {
-    const { r, g, b } = { r: 30, g: 30, b: 30 };
-
-    const getVal = (e:any, val:any) => {
-        console.log(e.target.name, val);
-    };
+    const [colorPallets, setcolorPallets] = useState({
+        red:30,
+        green:30,
+        blue:30
+    });
+    const getVal = (e: Event, val: number | number[]):void =>{
+        setcolorPallets({...colorPallets, [(e.target as HTMLInputElement).name]:val});
+    }
+    const {red, green, blue} = colorPallets;
 
     return (
         <>
@@ -26,7 +31,7 @@ export default function () {
                 <Stack sx={{ height: 200 }} spacing={1} direction="row">
                     <Typography gutterBottom>Red</Typography>
                     <Slider
-                        name="r"
+                        name="red"
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
@@ -36,7 +41,7 @@ export default function () {
                     />
                     <Typography gutterBottom>Green</Typography>
                     <Slider
-                        name="g"
+                        name="green"
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
@@ -46,7 +51,7 @@ export default function () {
                     />
                     <Typography gutterBottom>Blue</Typography>
                     <Slider
-                        name="b"
+                        name="blue"
                         orientation="vertical"
                         defaultValue={30}
                         valueLabelDisplay="on"
@@ -62,9 +67,9 @@ export default function () {
                             gap: 1
                         }}
                     >
-                        <Paper variant="outlined" sx={{ bgcolor: `rgb(${r},0,0)` }} />
-                        <Paper variant="outlined" sx={{ bgcolor: `rgb(0,${g},0)` }} />
-                        <Paper variant="outlined" sx={{ bgcolor: `rgb(0,0,${b})` }} />
+                        <Paper variant="outlined" sx={{ bgcolor: `rgb(${red},0,0)` }} />
+                        <Paper variant="outlined" sx={{ bgcolor: `rgb(0,${green},0)` }} />
+                        <Paper variant="outlined" sx={{ bgcolor: `rgb(0,0,${blue})` }} />
                     </Box>
                 </Stack>
             </Box>
@@ -76,7 +81,7 @@ export default function () {
                     mt: 2,
                     height: 100,
                     width: 400,
-                    backgroundColor: `rgb(${r},${g},${b})`
+                    backgroundColor: `rgb(${red},${green},${blue})`
                 }}
             />
         </>

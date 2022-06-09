@@ -8,7 +8,7 @@ import Play from "./Play";
 const Layout = () => {
     const [value, setValue] = React.useState("1");
 
-    const handleChange = (event, newValue) => {
+    const handleChange = (event:React.SyntheticEvent<Element, Event>, newValue:any) => {
         setValue(newValue);
     };
 

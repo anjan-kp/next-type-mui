@@ -1,6 +1,6 @@
 export const style = {
     table: {
-        "border-collapse": "collapse",
+        borderCollapse: "collapse" as "collapse",
         width: "100%"
     },
     tableCell: {
@@ -9,7 +9,7 @@ export const style = {
         padding: "5px 10px",
         width: "max-content",
         minWidth: "150px",
-        textAlign: "left"
+        textAlign: "left" as "left"
     },
     form: {
         container: {
@@ -32,7 +32,12 @@ export const style = {
         }
     },
     msg: {
-        textAlign: "center",
+        textAlign: "center" as "center",
         paddingTop: "10px"
+    },
+    error: {
+        color:"red",
+        fontSize:"8px",
+        display: "block"
     }
 };
