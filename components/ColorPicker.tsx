@@ -14,9 +14,8 @@ const ColorPicker: FC = () => {
   }
   const [rgb, setRGB] = useState(defaultRGB);
   const { r, g, b } = rgb;
-  const getVal = (event: SyntheticEvent | Event) => {
-    const elem = event.target as HTMLInputElement;
-    setRGB((prev) => ({ ...prev, [elem.name]: elem.value }));
+  const getVal = (event: Event, val: number | number[]) => {
+    setRGB((prev) => ({ ...prev, [(event.target as HTMLInputElement).name]: val as number }));
   };
   return (
     <>
@@ -36,7 +35,7 @@ const ColorPicker: FC = () => {
             orientation="vertical"
             defaultValue={30}
             valueLabelDisplay="on"
-            onChange={(e) => getVal(e)}
+            onChange={getVal}
             min={0}
             max={255}
           />
@@ -46,7 +45,7 @@ const ColorPicker: FC = () => {
             orientation="vertical"
             defaultValue={30}
             valueLabelDisplay="on"
-            onChange={(e) => getVal(e)}
+            onChange={getVal}
             min={0}
             max={255}
           />
@@ -56,7 +55,7 @@ const ColorPicker: FC = () => {
             orientation="vertical"
             defaultValue={30}
             valueLabelDisplay="on"
-            onChange={(e) => getVal(e)}
+            onChange={getVal}
             min={0}
             max={255}
           />
