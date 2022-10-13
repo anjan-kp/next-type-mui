@@ -1,25 +1,22 @@
-/*
-Make this application dynamic to change color on slider movement.
-Small boxes will fill colors red, green, blue [top to bottom]
-Big box will show the combined color in RGB(red, green, blue)
-*/
-import React from "react";
+import React, { useState, FC, SyntheticEvent } from "react";
 import { Box, Slider, Typography, Stack, Paper } from "@mui/material";
-type RGB ={
-  r:number;
-  g:number;
-  b:number;
+
+type RGB = {
+  r: number;
+  g: number;
+  b: number;
 }
-export default function () {
-  const defaultRGB :RGB = {
-    r: 30, 
-    g: 30, 
+const ColorPicker: FC = () => {
+  const defaultRGB: RGB = {
+    r: 30,
+    g: 30,
     b: 30
   }
-  const [rgb, setRGB] = React.useState(defaultRGB);
+  const [rgb, setRGB] = useState(defaultRGB);
   const { r, g, b } = rgb;
-  const getVal = (event?:any,val?:number):void => { console.log(event);
-    setRGB((prev) => ({ ...prev, [event.target.name]: val }));
+  const getVal = (event: SyntheticEvent | Event) => {
+    const elem = event.target as HTMLInputElement;
+    setRGB((prev) => ({ ...prev, [elem.name]: elem.value }));
   };
   return (
     <>
@@ -39,7 +36,7 @@ export default function () {
             orientation="vertical"
             defaultValue={30}
             valueLabelDisplay="on"
-            onChange={getVal}
+            onChange={(e) => getVal(e)}
             min={0}
             max={255}
           />
@@ -49,7 +46,7 @@ export default function () {
             orientation="vertical"
             defaultValue={30}
             valueLabelDisplay="on"
-            onChange={getVal}
+            onChange={(e) => getVal(e)}
             min={0}
             max={255}
           />
@@ -59,7 +56,7 @@ export default function () {
             orientation="vertical"
             defaultValue={30}
             valueLabelDisplay="on"
-            onChange={getVal}
+            onChange={(e) => getVal(e)}
             min={0}
             max={255}
           />
@@ -91,3 +88,5 @@ export default function () {
     </>
   );
 }
+
+export default ColorPicker;
