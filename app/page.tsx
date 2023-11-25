@@ -1,9 +1,9 @@
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Container from '@mui/material/Container';
-import Trustpilot from '../components/Trustpilot';
-import { Suspense } from 'react';
-import Loading from './loading';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Container from "@mui/material/Container";
+import Trustpilot from "../components/Trustpilot";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const Page = () => {
   return (
@@ -19,6 +19,6 @@ const Page = () => {
       </Container>
     </main>
   );
-}
+};
 
 export default Page;
