@@ -11,7 +11,7 @@ const Page = () => {
       <Container>
         <Suspense fallback={<Loading />}>
           <Box>
-            <Card>
+            <Card data-id="form123">
               <Form text="Form component" />
             </Card>
           </Box>
