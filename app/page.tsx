@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
-import Trustpilot from "../components/Trustpilot";
+import Form from "../components/Form";
 import { Suspense } from "react";
 import Loading from "./loading";
 
@@ -11,8 +11,8 @@ const Page = () => {
       <Container>
         <Suspense fallback={<Loading />}>
           <Box>
-            <Card>
-              <Trustpilot text="Trustpilot component" />
+            <Card data-id="form123">
+              <Form text="Form component" />
             </Card>
           </Box>
         </Suspense>
